@@ -29,7 +29,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.29.0/date_fns.min.js" integrity="sha256-J+IkOQfxSI1XzGtgoazVThPhunb79GLoKjW87erTCpM=" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js" integrity="sha256-65R1G5irU1VT+k8L4coqgd3saSvO/Wufson/w+v2Idw=" crossorigin="anonymous"></script>
 
-		<title>Tem IFCH hoje?</title>
+		<title>Tem InterComp hoje?</title>
 
 		<style>
 			body {
@@ -66,8 +66,8 @@
 
 		<main role="main" class="container text-center">
 			<h1 class="yesno d-none">Não</h1>
-			<p class="lead-no lead d-none">Estamos há <span class="odometer">0</span> dias sem festa no IFCH.</p>
-			<p class="lead-yes lead d-none">Hoje vai rolar <b class="party-name">0</b>!</p>
+			<p class="lead-no lead d-none">Faltam <span class="odometer">0</span> dias para o INTERCOMP 2022.</p>
+			<p class="lead-yes lead d-none">É hoje o <b class="party-name">0</b>!</p>
 			<p class="sub-text text-small d-none">O próximo rolê será no dia <b class="next-party">0</b>.</p>
 		</main>
 
@@ -75,13 +75,13 @@
 			<div class="container">
 				<div class="float-left">
 					Veja no
-					<a href="https://github.com/rmobis/tem-ifch-hoje" target="_blank">
+					<a href="https://github.com/danielNorbitt/tem-intercomp-hoje" target="_blank">
 						<i class="fab fa-github text-muted"></i> GitHub
 					</a>
 				</div>
 
 				<div class="float-right">
-					Made with <i class="fas fa-heart heart"></i> by <a href="https://fb.com/r.mobis" target="_blank">Phapha</a>
+					Made with <i class="fas fa-heart heart"></i> by <a href="https://www.instagram.com/liga.cem/" target="_blank">Liga CEM</a>
 				</div>
 			</div>
 		</footer>
@@ -89,34 +89,9 @@
 		<script>
 			let parties = [
 				{
-					name: 'Festa Junina da CEM',
-					date: '28/06/2018',
-					link: null
-				},
-				{
-					name: 'Maré Verde no IFCH',
-					date: '02/08/2018',
-					link: 'https://fb.com/events/234367033875311'
-				},
-				{
-					name: 'Ocupar com Arte, Cultura e Política',
-					date: '13/09/2019',
-					link: '/oacp.png'
-				},
-				{
-					name: 'A balbúrdia é aqui',
-					date: '18/10/2019',
-					link: '/abea.png'
-				},
-				{
-					name: 'Isso aqui vai virar o Chile!',
-					date: '24/10/2019',
-					link: 'https://www.facebook.com/groups/GrupoUnicamp/permalink/10157470262640446/'
-				},
-				{
-					name: 'A Gente Que Lute',
-					date: '22/11/2019',
-					link: '/agql.jpeg'
+					name: 'InterComp 2022',
+					date: '16/06/2022',
+					link: 'https://www.instagram.com/intercompoficial/'
 				}
 			];
 
@@ -135,27 +110,10 @@
 				return v;
 			});
 
-			fParties = fParties.sort((v, vv) => {
-				return dateFns.compareDesc(v.date, vv.date);
-			});
-
-			fParties = fParties.filter((v, k) => {
-				return dateFns.isBefore(v.date, today);
-			});
-
 			console.log(parties, fParties);
 
 			document.addEventListener("DOMContentLoaded", function () {
 				let theParty = fParties[0];
-
-				let isAnniv = false;
-				for (let possAnniv = theParty.date; dateFns.differenceInMonths(possAnniv, today) < 1; possAnniv = dateFns.addYears(possAnniv, 1)) {
-					isAnniv = Math.abs(dateFns.differenceInCalendarDays(possAnniv, today)) < 2;
-				}
-
-				// confetti override
-				const params = Object.fromEntries((new URLSearchParams(window.location.search)).entries());
-				isAnniv = isAnniv || params.hasOwnProperty('forceConfetti');
 
 				if (dateFns.isToday(theParty.date)) {
 					yesNo.innerText = 'SIM!';
@@ -167,15 +125,7 @@
 
 					pName.innerHTML = partyHTML;
 
-					leadY.classList.remove('d-none');
-				} else {
-					yesNo.innerText = 'NÃO';
-					odom.innerText = dateFns.differenceInCalendarDays(today, theParty.date);
-
-					leadN.classList.remove('d-none');
-
-					if (isAnniv) {
-						var f = document.createDocumentFragment();
+					var f = document.createDocumentFragment();
 
 						for (let i = 0; i <= 150; i++) {
 							var c = document.createElement('div');
@@ -183,8 +133,14 @@
 							f.appendChild(c);
 						}
 
-						document.body.appendChild(f);
-					}
+					document.body.appendChild(f);
+
+					leadY.classList.remove('d-none');
+				} else {
+					yesNo.innerText = 'NÃO';
+					odom.innerText = Math.abs(dateFns.differenceInCalendarDays(today, theParty.date));
+
+					leadN.classList.remove('d-none');
 
 					if (fParties.length < parties.length) {
 						subTx.classList.remove('d-none');
